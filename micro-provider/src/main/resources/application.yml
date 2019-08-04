@@ -36,6 +36,12 @@ spring:
       discovery:
         # 指定nacos server的地址
         server-addr: localhost:8848
+        #指定命名空间
+        namespace: 7e77469a-de4e-4ad0-841d-32a6df087295
+        #指定集群名称-假如是成都机房的集群
+        cluster-name: CD
+        metadata:
+          version: v1
   application:
     name: micro-provider
 
