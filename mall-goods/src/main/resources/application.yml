@@ -1,0 +1,26 @@
+spring:
+  #通用数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://120.77.173.199:3307/mall-goods?useInformationSchema=false&charset=utf8mb4&useSSL=false&allowMultiQueries=true
+    username: root
+    password: 123456
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
+mybatis:
+  mapper-locations: classpath:mapping/*Mapper.xml
+  type-aliases-package: com.sample.mall.goods.model
+
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 5000
+        read-timeout: 5000
+
+mycacheable:
+  rate:
+    limit:
+      map: {getGoods: 0.1, goodsList: 20}

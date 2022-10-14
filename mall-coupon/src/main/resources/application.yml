@@ -1,0 +1,18 @@
+spring:
+  #通用数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/mall-coupon?useInformationSchema=false&charset=utf8mb4&useSSL=false&allowMultiQueries=true
+    username: root
+    password: root
+
+mybatis:
+  mapper-locations: classpath:mapping/*Mapper.xml
+  type-aliases-package: com.sample.mall.coupon.model
+
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 5000
+        read-timeout: 5000

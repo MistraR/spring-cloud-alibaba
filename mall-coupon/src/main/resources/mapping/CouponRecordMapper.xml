@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sample.mall.coupon.mapper.CouponRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.sample.mall.coupon.model.CouponRecordDO">
+        <result column="id" jdbcType="BIGINT" property="id" />
+        <result column="user_id" jdbcType="VARCHAR" property="userId" />
+        <result column="coupon_id" jdbcType="VARCHAR" property="couponId" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+
+    <insert id="insertCouponRecord" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.sample.mall.coupon.model.CouponRecordDO">
+        insert into `mall-coupon`.t_coupon_record
+        (
+            user_id,
+            coupon_id,
+            status
+        )
+        values
+        (
+            #{userId},
+            #{couponId},
+            #{status}
+        )
+    </insert>
+
+    <select id="selectCouponRecord" parameterType="com.sample.mall.coupon.model.CouponRecordDO" resultMap="BaseResultMap">
+        select *
+          from `mall-coupon`.t_coupon_record
+         where id = #{id}
+           and user_id = #{userId}
+    </select>
+
+    <select id="selectCouponRecordByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select *
+          from `mall-coupon`.t_coupon_record
+          where user_id = #{userId}
+    </select>
+
+    <update id="updateCouponRecordStatus" parameterType="com.sample.mall.coupon.model.CouponRecordDO">
+        update `mall-coupon`.t_coupon_record
+           set status = #{status}
+         where id = #{id}
+    </update>
+
+</mapper>

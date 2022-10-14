@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sample.mall.goods.mapper.GoodsMapper">
+
+    <resultMap id="BaseResultMap" type="com.sample.mall.goods.model.GoodsDO">
+        <result column="id" jdbcType="BIGINT" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="type" jdbcType="TINYINT" property="type" />
+        <result column="price" jdbcType="DECIMAL" property="price" />
+        <result column="stock" jdbcType="BIGINT" property="stock" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+
+    <insert id="insertGoods" parameterType="com.sample.mall.goods.model.GoodsDO">
+        insert into `mall-goods`.t_goods
+        (
+             name,
+             description,
+             type,
+             price,
+             stock
+        )
+        values
+        (
+             #{name},
+             #{description},
+             #{type},
+             #{price},
+             #{stock}
+        )
+    </insert>
+
+    <select id="selectGoodsById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select *
+          from `mall-goods`.t_goods
+         where id = #{id}
+    </select>
+
+    <update id="updateGoodsListStock" parameterType="java.util.List">
+        <foreach collection="list" item="goods" index="index" open="" close="" separator=";">
+            update `mall-goods`.t_goods
+               set stock = stock - #{goods.stock}
+             where id = #{goods.id}
+               and stock >= #{goods.stock}
+        </foreach>
+    </update>
+</mapper>
