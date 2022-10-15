@@ -1,22 +1,19 @@
 package com.sample.mall.goods.service.impl;
 
 
+import com.sample.mall.common.annotation.MyCacheable;
 import com.sample.mall.common.base.Constants;
 import com.sample.mall.common.base.ResponseEnum;
 import com.sample.mall.common.dto.GoodsDTO;
 import com.sample.mall.common.dto.OrderItemDTO;
 import com.sample.mall.common.exception.BusinessException;
 import com.sample.mall.common.util.Assert;
-import com.sample.mall.common.util.JSONUtil;
 import com.sample.mall.common.util.ObjectTransformer;
 import com.sample.mall.goods.mapper.GoodsMapper;
 import com.sample.mall.goods.model.GoodsDO;
 import com.sample.mall.goods.service.IGoodsService;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -50,7 +47,7 @@ public class GoodsServiceImpl implements IGoodsService {
 
     @Override
     public GoodsDTO getGoods(Long id) {
-        String cacheKey = String.format(Constants.GOODS_CACHE_KEY, id);
+        String cacheKey = String.format(Constants.GOODS_CACHE_KEY_PREFIX, id);
         GoodsDO goodsDO = redisTemplate.opsForValue().get(cacheKey);
         logger.info("key:{}, value:{}", cacheKey, goodsDO);
         if (goodsDO == null) {
@@ -67,11 +64,12 @@ public class GoodsServiceImpl implements IGoodsService {
      * @param id
      * @return
      */
-    @CacheEvict
-    @CachePut
-    @Cacheable(value = Constants.GOODS_CACHE_KEY, key = "#id")
+//    @CacheEvict
+//    @CachePut
+//    @Cacheable(value = Constants.GOODS_CACHE_KEY_PREFIX, key = "#id")
+    @MyCacheable(cacheName = Constants.GOODS_CACHE_KEY_PREFIX, key = "#id")
     public GoodsDTO getGoods2(Long id) {
-        String cacheKey = String.format(Constants.GOODS_CACHE_KEY, id);
+        String cacheKey = String.format(Constants.GOODS_CACHE_KEY_PREFIX, id);
         GoodsDO goodsDO = redisTemplate.opsForValue().get(cacheKey);
         logger.info("key:{}, value:{}", cacheKey, goodsDO);
         if (goodsDO == null) {
@@ -87,7 +85,7 @@ public class GoodsServiceImpl implements IGoodsService {
         GoodsDO goodsDO = null;
         try (Jedis jedis = new Jedis("localhost", 6379);) {
 
-            String cacheKey = String.format(Constants.GOODS_CACHE_KEY, id);
+            String cacheKey = String.format(Constants.GOODS_CACHE_KEY_PREFIX, id);
             Map<String, String> cacheValue = jedis.hgetAll(cacheKey);
             logger.info("key:{}, value:{}", cacheKey, cacheValue);
 
