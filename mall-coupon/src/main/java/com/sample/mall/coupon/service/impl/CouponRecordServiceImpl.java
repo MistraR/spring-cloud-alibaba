@@ -1,7 +1,6 @@
 package com.sample.mall.coupon.service.impl;
 
 import com.sample.mall.common.base.ResponseEnum;
-import com.sample.mall.common.dto.CouponDTO;
 import com.sample.mall.common.dto.CouponRecordDTO;
 import com.sample.mall.common.exception.BusinessException;
 import com.sample.mall.common.util.Assert;
@@ -70,7 +69,8 @@ public class CouponRecordServiceImpl implements ICouponRecordService {
      *
      * @param couponRecordDO
      */
-    private void checkCouponRecordStatus(CouponRecordDO couponRecordDO) {
+    @Override
+    public void checkCouponRecordStatus(CouponRecordDO couponRecordDO) {
         Assert.notNull(couponRecordDO);
         if (couponRecordDO.getStatus() == 1) {
             throw new BusinessException(ResponseEnum.COUPON_USED);

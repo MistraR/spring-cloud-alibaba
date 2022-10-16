@@ -2,6 +2,7 @@ package com.sample.mall.coupon.service;
 
 
 import com.sample.mall.common.dto.CouponRecordDTO;
+import com.sample.mall.coupon.model.CouponRecordDO;
 
 /**
  * 优惠券记录Service
@@ -23,5 +24,7 @@ public interface ICouponRecordService {
      * @return
      */
     boolean useCoupon(CouponRecordDTO couponRecordDTO);
+
+    void checkCouponRecordStatus(CouponRecordDO couponRecordDO);
 
 }
