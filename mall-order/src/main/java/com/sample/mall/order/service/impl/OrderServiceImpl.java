@@ -12,6 +12,7 @@ import com.sample.mall.order.mapper.OrderMapper;
 import com.sample.mall.order.model.OrderDO;
 import com.sample.mall.order.model.OrderItemDO;
 import com.sample.mall.order.service.IOrderService;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -33,17 +34,17 @@ public class OrderServiceImpl implements IOrderService {
     GoodsFeign goodsFeign;
 
     /**
+     * GlobalTransactional 开启全局事务
      * 下单服务
-     * <p>
      * 1、先判断是否有使用优惠券，有的话则调用优惠券服务，进行优惠券核销处理 <br/>
      * 2、获取订单明细列表，调用商品服务，根据商品ID和购买数量，进行库存检查和扣减 <br/>
      * 3、保存主订单信息 <br/>
      * 4、保存订单明细 <br/>
-     * </p>
      *
      * @param orderDTO
      * @return
      */
+    @GlobalTransactional
     @Override
     public boolean createOrder(OrderDTO orderDTO) {
 

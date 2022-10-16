@@ -72,7 +72,7 @@ public class CouponRecordServiceImpl implements ICouponRecordService {
      */
     private void checkCouponRecordStatus(CouponRecordDO couponRecordDO) {
         Assert.notNull(couponRecordDO);
-        if(couponRecordDO.getStatus() == 1) {
+        if (couponRecordDO.getStatus() == 1) {
             throw new BusinessException(ResponseEnum.COUPON_USED);
         } else if (couponRecordDO.getStatus() == -1) {
             throw new BusinessException(ResponseEnum.COUPON_EXPIRED);

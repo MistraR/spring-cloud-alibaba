@@ -8,6 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
+/**
+ * Redis Bitmap
+ */
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class CustomBloomFilterTest {
@@ -32,7 +35,7 @@ public class CustomBloomFilterTest {
         int count = 0;
         for (int j = size; j < size * 2; j++) {
             boolean match = redisTemplate.opsForValue().getBit(BLOOM_FILTER_NAME, this.getOffset(j));
-            if(match) {
+            if (match) {
                 count++;
                 System.out.println(j + "误判了");
             }
@@ -45,8 +48,8 @@ public class CustomBloomFilterTest {
         long offset = (long) (hashCode % Math.pow(2, 32));
         System.out.println(
                 "index = " + i + "\t" +
-                "hashCode = " + hashCode + "\t" +
-                "offset = " + offset);
+                        "hashCode = " + hashCode + "\t" +
+                        "offset = " + offset);
         return offset;
     }
 }

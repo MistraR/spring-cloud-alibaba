@@ -8,6 +8,10 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
+    bloom-filter:
+      name: goodsBloomFilter
+      init-capacity: 10000
+      error-rate: 0.01
 
 mybatis:
   mapper-locations: classpath:mapping/*Mapper.xml
@@ -23,4 +27,5 @@ feign:
 mycacheable:
   rate:
     limit:
-      map: {getGoods: 0.1, goodsList: 20}
+      // 每秒产生多少令牌
+      map: {getGoods: 10, goodsList: 20}

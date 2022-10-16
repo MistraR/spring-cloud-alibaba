@@ -22,7 +22,7 @@ public class IDGenerator {
 
     /**
      * 根据业务类型生成ID，规则：
-     *
+     * <p>
      * 1位业务编码 + 15位日期时间 + 3序列号
      *
      * @param idTypeEnum 业务类型
@@ -32,7 +32,7 @@ public class IDGenerator {
         LocalDateTime now = LocalDateTime.now();
         String dateTime = dateTimeFormatter.format(now);
 
-        long value =  redisTemplate.opsForValue().increment(idTypeEnum.getRedisCounter(), 1);
+        long value = redisTemplate.opsForValue().increment(idTypeEnum.getRedisCounter(), 1);
         if (value >= 1000) {
             // 0～999
             value = value % 1000;

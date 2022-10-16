@@ -46,6 +46,7 @@ public class GoodsServiceImpl implements IGoodsService {
     }
 
     @Override
+    @MyCacheable(cacheName = Constants.GOODS_CACHE_KEY_PREFIX, key = "#id", expireInSeconds = 1, waitInSeconds = 2, bloomFilterName = "goodsBloomFilter")
     public GoodsDTO getGoods(Long id) {
         String cacheKey = String.format(Constants.GOODS_CACHE_KEY_PREFIX, id);
         GoodsDO goodsDO = redisTemplate.opsForValue().get(cacheKey);
@@ -66,8 +67,7 @@ public class GoodsServiceImpl implements IGoodsService {
      */
 //    @CacheEvict
 //    @CachePut
-//    @Cacheable(value = Constants.GOODS_CACHE_KEY_PREFIX, key = "#id")
-    @MyCacheable(cacheName = Constants.GOODS_CACHE_KEY_PREFIX, key = "#id")
+    @Cacheable(value = Constants.GOODS_CACHE_KEY_PREFIX, key = "#id")
     public GoodsDTO getGoods2(Long id) {
         String cacheKey = String.format(Constants.GOODS_CACHE_KEY_PREFIX, id);
         GoodsDO goodsDO = redisTemplate.opsForValue().get(cacheKey);
