@@ -31,7 +31,7 @@ public class RateLimiterAspect {
     private static final Logger log = LoggerFactory.getLogger(RateLimiterAspect.class);
 
     /**
-     * 以资源名称为key值，存储多个的限流器
+     * 以资源名称为key值(请求路径 uri)，存储多个的限流器
      */
     private Map<String, RateLimiter> limiters = Maps.newConcurrentMap();
 

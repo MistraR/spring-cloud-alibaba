@@ -12,6 +12,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 
+/**
+ * 优化版本，解决惊群效应
+ */
 public class ZkLockV2 implements Lock {
 
     private static final String zkServer = "localhost:2181";
@@ -28,14 +31,14 @@ public class ZkLockV2 implements Lock {
         zkClient.setZkSerializer(new ZkSerializer());
 
         this.lockPath = lockPath;
-        if(!zkClient.exists(lockPath)) {
+        if (!zkClient.exists(lockPath)) {
             zkClient.createPersistent(lockPath);
         }
     }
 
     @Override
     public void lock() {
-        if(!tryLock()) {
+        if (!tryLock()) {
 
             CountDownLatch countDownLatch = new CountDownLatch(1);
 
@@ -53,7 +56,7 @@ public class ZkLockV2 implements Lock {
             };
             zkClient.subscribeDataChanges(previousPath.get(), dataListener);
 
-            if(zkClient.exists(previousPath.get())) {
+            if (zkClient.exists(previousPath.get())) {
                 try {
                     countDownLatch.await();
                 } catch (InterruptedException e) {
@@ -70,7 +73,7 @@ public class ZkLockV2 implements Lock {
     @Override
     public void unlock() {
         String data = zkClient.readData(currentPath.get());
-        if(StringUtils.equals(data, Thread.currentThread().getName())) {
+        if (StringUtils.equals(data, Thread.currentThread().getName())) {
             zkClient.delete(currentPath.get());
         }
     }
@@ -78,7 +81,7 @@ public class ZkLockV2 implements Lock {
     @Override
     public boolean tryLock() {
 
-        if(StringUtils.isBlank(currentPath.get())) {
+        if (StringUtils.isBlank(currentPath.get())) {
             String path = zkClient.createEphemeralSequential(lockPath + "/", Thread.currentThread().getName());
             currentPath.set(path);
         }
@@ -86,7 +89,7 @@ public class ZkLockV2 implements Lock {
         List<String> children = zkClient.getChildren(lockPath);
         Collections.sort(children);
 
-        if(StringUtils.equals(currentPath.get(), lockPath + "/" + children.get(0))) {
+        if (StringUtils.equals(currentPath.get(), lockPath + "/" + children.get(0))) {
             return true;
         } else {
             int index = children.indexOf(currentPath.get().substring(lockPath.length() + 1));

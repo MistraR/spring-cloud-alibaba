@@ -17,6 +17,7 @@ public class RateLimiterTest {
      */
     @Test
     public void testCreate() {
+        // 每秒产生1个令牌
         RateLimiter rateLimiter = RateLimiter.create(1);
         System.out.println(rateLimiter.getRate());
 
@@ -32,6 +33,8 @@ public class RateLimiterTest {
     public void testAcquire() {
         RateLimiter rateLimiter = RateLimiter.create(1);
         while (true) {
+//            boolean result = rateLimiter.acquire(1); 阻塞方法
+            // 非阻塞 可以指定等待时间
             boolean result = rateLimiter.tryAcquire(1);
             System.out.println(result);
         }
